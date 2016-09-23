@@ -27,7 +27,7 @@ class DTReceiptTests: XCTestCase
     
     func testEmptyData()
     {
-        let emptyData = NSData()
+        let emptyData = Data()
         let pkcs7 = PKCS7Container(data: emptyData)
         
         XCTAssertNil(pkcs7)
@@ -108,18 +108,18 @@ class DTReceiptTests: XCTestCase
     
     // MARK: - Helper
     
-    func dataForTestResource(name: String?, ofType ext: String?) -> NSData?
+    func dataForTestResource(_ name: String?, ofType ext: String?) -> Data?
     {
-        let bundle = NSBundle(forClass: self.dynamicType)
+        let bundle = Bundle(for: type(of: self))
         
-        guard let path = bundle.pathForResource(name, ofType: ext) else { return nil }
+        guard let path = bundle.path(forResource: name, ofType: ext) else { return nil }
 
-        return NSData(contentsOfFile: path)
+        return (try? Data(contentsOf: URL(fileURLWithPath: path)))
     }
     
-    func receiptFromTestResource(name: String?, ofType ext: String?) -> Receipt?
+    func receiptFromTestResource(_ name: String?, ofType ext: String?) -> Receipt?
     {
-        let bundle = NSBundle(forClass: self.dynamicType)
+        let bundle = Bundle(for: type(of: self))
         
         guard let URL = bundle.URLForResource(name, withExtension: ext) else { return nil }
         
